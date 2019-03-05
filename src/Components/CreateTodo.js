@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+
 const INITIAL_STATE = {
   description: '',
   responsible: '',
@@ -19,6 +21,9 @@ class CreateTodo extends Component {
   }
   onSubmit = (e) => {
     e.preventDefault()
+    axios.post('http://localhost:4000/todos/add', this.state)
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
     this.setState({
       INITIAL_STATE
     })
