@@ -4,14 +4,15 @@ import {Link} from 'react-router-dom'
 
 const Todo = props => (
   <tr>
-      <td>{props.todo.description}</td>
-      <td>{props.todo.responsible}</td>
-      <td>{props.todo.priority}</td>
+      <td className={props.todo.completed ? 'completed' : ''}>{props.todo.description}</td>
+      <td className={props.todo.completed ? 'completed' : ''}>{props.todo.responsible}</td>
+      <td className={props.todo.completed ? 'completed' : ''}>{props.todo.priority}</td>
       <td>
-          <Link to={`/edit/${props.todo._id}`} key={props.todo_id}>Edit</Link>
+          <Link to={"/edit/"+props.todo._id}>Edit</Link>
       </td>
   </tr>
 )
+
 class TodosList extends Component {
   constructor(props) {
     super(props);
@@ -22,11 +23,19 @@ class TodosList extends Component {
 
   componentDidMount() {
     axios.get('http://localhost:4000/todos')
-      .then(res => this.setState({
-        todos: res.data
-      }))
+      .then(res => this.setState({todos: res.data}))
       .catch(err => console.log(err))
   }
+
+  componentDidUpdate() {
+    axios.get('http://localhost:4000/todos/')
+    .then(response => {
+        this.setState({todos: response.data});
+    })
+    .catch(function (error) {
+        console.log(error);
+    })
+}
 
   todoList = () => {
     return this.state.todos.map(function(todo, i) {
